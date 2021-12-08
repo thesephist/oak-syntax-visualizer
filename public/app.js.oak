@@ -1,0 +1,47 @@
+{
+	println: println
+} := import('std')
+syntax := import('syntax')
+pprint := import('pprint')
+
+InitialSource := 'std := import(\'std\')\nstd.println(\'Hello, World!\')'
+
+select := bind(document, :querySelector)
+
+progInput := select('textarea[name=prog]')
+showTokens := select('input[name=vis-tokens]')
+showTree := select('input[name=vis-tree]')
+tokensContainer := select('.vis-tokens')
+treeContainer := select('.vis-tree')
+tokensBox := select('.vis-tokens pre code')
+treeBox := select('.vis-tree pre code')
+
+fn updateVisualizations {
+	prog := progInput.value
+	tokensBox.textContent := prog |> pprint.tokenStream()
+	treeBox.textContent := prog |> pprint.syntaxTree()
+}
+
+with bind(progInput, :addEventListener)('input') fn(evt) {
+	updateVisualizations()
+}
+
+with bind(showTokens, :addEventListener)('change') fn(evt) {
+	tokensContainer.style.display := if evt.target.checked {
+		true -> 'block'
+		_ -> 'none'
+	}
+}
+
+with bind(showTree, :addEventListener)('change') fn(evt) {
+	treeContainer.style.display := if evt.target.checked {
+		true -> 'block'
+		_ -> 'none'
+	}
+}
+
+// main
+
+progInput.value := InitialSource
+updateVisualizations()
+

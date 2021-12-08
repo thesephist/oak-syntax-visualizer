@@ -1,0 +1,115 @@
+#!/usr/bin/env oak
+
+// pretty printer for Oak syntax trees
+
+{
+	println: println
+	default: default
+	clone: clone
+	map: map
+	each: each
+	slice: slice
+	append: append
+} := import('std')
+{
+	join: join
+	replace: replace
+} := import('str')
+{
+	format: format
+} := import('fmt')
+syntax := import('syntax')
+
+fn tree(node) if node.type {
+	:empty -> [:Empty]
+	:null -> [:Null]
+	:string -> [:String, node.val]
+	:assignment -> [:Assignment, tree(node.left), tree(node.right)]
+	:float -> [:Float, node.val]
+	:int -> [:Int, node.val]
+	:bool -> [:Bool, node.val]
+	:atom -> [:Atom, node.val]
+	:list -> [:List] |> append(node.elems |> map(tree))
+	:object -> [
+		:Object
+		[:Entries] |> append(
+			node.entries |> map(
+				fn(entry) [:Entry, tree(entry.key), tree(entry.val)]
+			)
+		)
+	]
+	:block -> [:Block] |> append(node.exprs |> map(tree))
+	:function -> [
+		:Function
+		node.name |> default('(anonymous)')
+		if node.restArg {
+			'' -> [:Args] |> append(node.args)
+			_ -> [:Args] |> append(node.args) |> append([node.restArg])
+		}
+		[:Body, tree(node.body)]
+	]
+	:identifier -> [:Identifier, node.val]
+	:unary -> [:UnaryExpr, node.op, tree(node.right)]
+	:binary -> [:BinaryExpr, node.op, tree(node.left), tree(node.right)]
+	:ifExpr -> [
+		:If
+		tree(node.cond)
+		[:Branches] |> append(
+			node.branches |> map(fn(br) [:Branch, tree(br.target), tree(br.body)])
+		)
+	]
+	:propertyAccess -> [:PropertyAccess, tree(node.left), tree(node.right)]
+	:fnCall -> [
+		:FunctionCall
+		tree(node.function)
+		if node.restArg {
+			? -> [:Args] |> append(node.args |> map(tree))
+			_ -> [:Args] |> append(node.args |> map(tree)) |> append([tree(node.restArg)])
+		}
+	]
+}
+
+fn renderTreeList(tr) if type(tr) {
+	:list -> '[' + join(tr |> map(renderTreeList) |> join(' ')) + ']'
+	_ -> string(tr)
+}
+
+fn renderTreeDown(tr, lasts) {
+	lasts := lasts |> default([])
+	indent := lasts |> map(fn(last?, i) if {
+		last? & i = len(lasts) - 1 -> '└─'
+		last? -> '  '
+		i = len(lasts) - 1 -> '├─'
+		_ -> '│ '
+	}) |> join('')
+
+	fn render(val) if type(val) {
+		:string -> '\'' + (val |> replace('\'', '\\\'') |> replace('\n', '\\n')) + '\''
+		_ -> string(val)
+	}
+
+	if type(tr) {
+		:list -> tr |> map(fn(child, i) {
+			if i {
+				0 -> indent + render(child)
+				_ -> renderTreeDown(child, clone(lasts) << i = len(tr) - 1)
+			}
+		}) |> join('\n')
+		_ -> indent + render(tr)
+	}
+}
+
+fn tokenStream(prog) {
+	syntax.tokenize(prog) |> map(string) |> join('\n')
+}
+
+fn syntaxTree(prog) {
+	nodes := prog |> syntax.parse()
+	if nodes.type {
+		:error -> 'Syntax error: {{0}}' |> format(nodes.error)
+		_ -> nodes |>
+			map(fn(node) node |> tree() |> renderTreeDown()) |>
+			join('\n')
+	}
+}
+

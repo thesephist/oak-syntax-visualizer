@@ -1,0 +1,49 @@
+<meta charset="utf-8">
+<title>Oak syntax visualizer</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="/main.css">
+
+<!-- google fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
+
+<div id="app">
+    <header>
+        <div class="logo">
+            Oak syntax visualizer
+        </div>
+        <nav>
+            <a href="https://github.com/thesephist">about</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="prog-input">
+            <textarea name="prog"
+					  placeholder="std.println('Hello, World!')"
+					  autofocus></textarea>
+        </div>
+        <div class="controls">
+            <label>
+                <input type="checkbox" name="vis-tokens" checked>
+                Tokens
+            </label>
+            <label>
+                <input type="checkbox" name="vis-tree" checked>
+                Syntax tree
+            </label>
+        </div>
+        <div class="visualizations">
+            <div class="vis-tokens">
+                <pre><code></code></pre>
+            </div>
+            <div class="vis-tree">
+                <pre><code></code></pre>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="/bundle.js"></script>
+
