@@ -1,124 +1,130 @@
 html,
 body {
-	margin: 0;
-	font-family: 'Inconsolata', monospace;
+    margin: 0;
+    font-family: 'Inconsolata', monospace;
 }
 
 body {
-	background: var(--bg-main);
+    background: var(--bg-main);
 
-	--fg-main: #000;
-	--fg-light: #6b70a4;
-	--bg-main: #f8f8f8;
-	--bg-light: #d5d6e0;
+    --fg-main: #000;
+    --fg-light: #6b70a4;
+    --bg-main: #f8f8f8;
+    --bg-light: #d5d6e0;
 }
 
 input,
 textarea,
 code {
-	font-size: 1em;
-	font-family: 'Inconsolata', monospace;
+    font-size: 1em;
+    font-family: 'Inconsolata', monospace;
 }
 
 label {
-	cursor: pointer;
-	margin-right: 2ch;
+    cursor: pointer;
+    margin-right: 2ch;
 }
 
 #app {
-	height: 100vh;
-	width: 100%;
-	overflow: hidden;
-	display: flex;
-	flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 header,
 main {
-	max-width: 1080px;
-	width: calc(100% - 32px);
-	margin: 0 auto;
+    max-width: 1080px;
+    width: calc(100% - 32px);
+    margin: 0 auto;
 }
 
 header {
-	height: 50px;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	flex-grow: 0;
-	flex-shrink: 0;
-	gap: 2ch;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+    gap: 2ch;
 }
 
 nav a {
-	color: var(--fg-light);
-	text-decoration: none;
+    color: var(--fg-light);
+    text-decoration: none;
 }
 
 nav a:hover {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 main {
-	height: 0;
-	flex-grow: 1;
-	display: flex;
-	flex-direction: column;
-	margin: 8px auto;
+    height: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 8px auto;
 }
 
 .prog-input,
 .controls,
 .visualizations {
-	width: 100%;
+    width: 100%;
 }
 
 .prog-input textarea {
-	width: 100%;
-	resize: vertical;
-	min-height: 6em;
-	margin-bottom: 8px;
-	background: var(--bg-light);
-	border: 0;
-	border-radius: 6px;
-	padding: 8px 12px;
-	tab-size: 4;
+    width: 100%;
+    resize: vertical;
+    min-height: 120px;
+    margin-bottom: 8px;
+    background: var(--bg-light);
+    border: 0;
+    border-radius: 4px;
+    padding: 8px 12px;
+    tab-size: 4;
 }
 
 .prog-input textarea:focus {
-	outline: 1px solid var(--fg-light);
+    outline: 1px solid var(--fg-light);
 }
 
 .controls {
-	margin-bottom: 8px;
+    margin-bottom: 8px;
 }
 
 .visualizations {
-	display: flex;
-	flex-direction: row;
-	gap: 16px;
-	height: 0;
-	flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    height: 0;
+    flex-grow: 1;
 }
 
 .vis-tokens,
 .vis-tree {
-	padding-top: 4px;
-	overflow: auto;
-	width: 0;
-	flex-grow: 1;
+    padding-top: 4px;
+    overflow: auto;
+    width: 0;
+    flex-grow: 1;
+}
+
+.vis-tokens code:empty::after,
+.vis-tree code:empty::after {
+    content: '¯\\_(ツ)_/¯';
+    color: var(--fg-light);
 }
 
 .vis-tokens::before,
 .vis-tree::before {
-	color: var(--fg-light);
+    color: var(--fg-light);
 }
 
 .vis-tokens::before {
-	content: 'Token stream';
+    content: 'Token stream';
 }
 
 .vis-tree::before {
-	content: 'Syntax tree';
+    content: 'Syntax tree';
 }
 
