@@ -10,6 +10,7 @@
 	each: each
 	slice: slice
 	append: append
+	reduce: reduce
 } := import('std')
 {
 	join: join
@@ -76,12 +77,12 @@ fn renderTreeList(tr) if type(tr) {
 
 fn renderTreeDown(tr, lasts) {
 	lasts := lasts |> default([])
-	indent := lasts |> map(fn(last?, i) if {
-		last? & i = len(lasts) - 1 -> '└─'
-		last? -> '  '
-		i = len(lasts) - 1 -> '├─'
-		_ -> '│ '
-	}) |> join('')
+	indent := lasts |> with reduce('') fn(indent, last?, i) if {
+		last? & i = len(lasts) - 1 -> indent << '└─'
+		last? -> indent << '  '
+		i = len(lasts) - 1 -> indent << '├─'
+		_ -> indent << '│ '
+	}
 
 	fn render(val) if type(val) {
 		:string -> '\'' + (val |> replace('\'', '\\\'') |> replace('\n', '\\n')) + '\''
