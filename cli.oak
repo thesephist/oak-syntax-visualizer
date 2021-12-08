@@ -1,0 +1,26 @@
+#!/usr/bin/env oak
+
+std := import('std')
+pprint := import('lib/pprint')
+
+fn replLine(ty) {
+	print('> ')
+	{ data: prog } := input()
+	if ty {
+		:ast -> prog |>
+			pprint.syntaxTree() |>
+			std.println()
+		_ -> prog |>
+			pprint.tokenStream() |>
+			std.println()
+	}
+
+	// recur
+	replLine(ty)
+}
+
+if args().2 {
+	'-ast', '-nodes', 'ast', 'nodes' -> replLine(:ast)
+	_ -> replLine(:tokens)
+}
+

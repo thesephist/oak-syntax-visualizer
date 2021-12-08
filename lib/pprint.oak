@@ -106,8 +106,8 @@ fn tokenStream(prog) {
 
 fn syntaxTree(prog) {
 	nodes := prog |> syntax.parse()
-	if nodes.type {
-		:error -> 'Syntax error: {{0}}' |> format(nodes.error)
+	if nodes {
+		{ type: :error, error: _, pos: _ } -> 'Syntax error: {{0}}' |> format(nodes.error)
 		_ -> nodes |>
 			map(fn(node) node |> tree() |> renderTreeDown()) |>
 			join('\n')

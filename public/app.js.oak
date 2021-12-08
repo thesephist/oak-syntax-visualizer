@@ -2,7 +2,7 @@
 	println: println
 } := import('std')
 syntax := import('syntax')
-pprint := import('pprint')
+pprint := import('../lib/pprint')
 
 InitialSource := 'std := import(\'std\')\nstd.println(\'Hello, World!\')'
 
