@@ -45,11 +45,11 @@ Internally, this rendering is accomplished by first transforming the syntax tree
 
 ```rb
 [:FunctionCall
-	[:PropertyAccess
-		[:Identifier 'std']
-		[:Identifier 'println']]
-	[:Args
-		[:String 'Hello, World!']]]
+    [:PropertyAccess
+        [:Identifier 'std']
+        [:Identifier 'println']]
+    [:Args
+        [:String 'Hello, World!']]]
 ```
 
 and then rendering this output to a string using a custom algorithm in `pprint.renderTreeDown`.
