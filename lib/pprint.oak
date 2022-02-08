@@ -101,7 +101,7 @@ fn renderTreeDown(tr, lasts) {
 }
 
 fn tokenStream(prog) {
-	syntax.tokenize(prog) |> map(string) |> join('\n')
+	syntax.tokenize(prog) |> map(syntax.renderToken) |> join('\n')
 }
 
 fn syntaxTree(prog) {
