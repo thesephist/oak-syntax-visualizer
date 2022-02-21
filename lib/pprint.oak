@@ -11,6 +11,7 @@
 	slice: slice
 	append: append
 	reduce: reduce
+	compact: compact
 } := import('std')
 {
 	join: join
@@ -63,11 +64,9 @@ fn tree(node) if node.type {
 	:fnCall -> [
 		:FunctionCall
 		tree(node.function)
-		if node.restArg {
-			? -> [:Args] |> append(node.args |> map(tree))
-			_ -> [:Args] |> append(node.args |> map(tree)) |> append([tree(node.restArg)])
-		}
-	]
+		if node.args != [] -> [:Args] |> append(node.args |> map(tree))
+		if node.restArg != ? -> [:RestArg, tree(node.restArg)]
+	] |> compact()
 }
 
 fn renderTreeList(tr) if type(tr) {
