@@ -6,7 +6,7 @@ pprint := import('../lib/pprint')
 
 InitialSource := 'std := import(\'std\')\nstd.println(\'Hello, World!\')'
 
-select := bind(document, :querySelector)
+select := document.querySelector.bind(document)
 
 progInput := select('textarea[name=prog]')
 showTokens := select('input[name=vis-tokens]')
@@ -22,18 +22,18 @@ fn updateVisualizations {
 	treeBox.textContent := prog |> pprint.syntaxTree()
 }
 
-with bind(progInput, :addEventListener)('input') fn(evt) {
+with progInput.addEventListener('input') fn(evt) {
 	updateVisualizations()
 }
 
-with bind(showTokens, :addEventListener)('change') fn(evt) {
+with showTokens.addEventListener('change') fn(evt) {
 	tokensContainer.style.display := if evt.target.checked {
 		true -> 'block'
 		_ -> 'none'
 	}
 }
 
-with bind(showTree, :addEventListener)('change') fn(evt) {
+with showTree.addEventListener('change') fn(evt) {
 	treeContainer.style.display := if evt.target.checked {
 		true -> 'block'
 		_ -> 'none'
