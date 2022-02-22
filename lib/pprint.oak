@@ -20,6 +20,7 @@
 {
 	format: format
 } := import('fmt')
+debug := import('debug')
 syntax := import('syntax')
 
 fn tree(node) if node.type {
@@ -84,8 +85,8 @@ fn renderTreeDown(tr, lasts) {
 	}
 
 	fn render(val) if type(val) {
-		:string -> '\'' + (val |> replace('\'', '\\\'') |> replace('\n', '\\n')) + '\''
-		_ -> string(val)
+		:atom -> string(val)
+		_ -> debug.inspect(val)
 	}
 
 	if type(tr) {
