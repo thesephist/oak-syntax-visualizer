@@ -3,19 +3,15 @@
 // pretty printer for Oak syntax trees
 
 {
-	println: println
 	default: default
 	clone: clone
 	map: map
-	each: each
-	slice: slice
 	append: append
 	reduce: reduce
 	compact: compact
 } := import('std')
 {
 	join: join
-	replace: replace
 } := import('str')
 {
 	format: format
